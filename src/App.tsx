@@ -197,21 +197,21 @@ function App() {
       name: "Sheikh Mishary Rashid Alafasy",
       similarity: 87,
       country: "Kuwait",
-      audioUrl: "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3",
+      audioUrl: "/audio/Mishari.mp3",
       description: "Known for his melodious and heart-touching recitation style"
     },
     {
       name: "Sheikh Abdul Rahman As-Sudais",
       similarity: 82,
       country: "Saudi Arabia", 
-      audioUrl: "https://file-examples.com/storage/fe68c8a7c4bb3b2b8e8140f/2017/11/file_example_MP3_700KB.mp3",
+      audioUrl: "/audio/Sudais.mp3",
       description: "Imam of Masjid al-Haram with a distinctive powerful voice"
     },
     {
       name: "Sheikh Saad Al-Ghamdi",
       similarity: 78,
       country: "Saudi Arabia",
-      audioUrl: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+      audioUrl: "/audio/Sa'ad.mp3",
       description: "Popular for his clear pronunciation and emotional delivery"
     }
   ];
