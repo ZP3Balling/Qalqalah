@@ -270,6 +270,7 @@ useEffect(() => {
   
 
   const startRecording = async () => {
+    console.log("Start recording function triggered");
     try {
       setPermissionError(null);
       setSilentRecordingError(null);
