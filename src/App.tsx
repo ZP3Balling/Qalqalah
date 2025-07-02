@@ -184,37 +184,39 @@ function App() {
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
-  const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const audioLevelIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const timerIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const audioLevelIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  
   const streamRef = useRef<MediaStream | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const volumeLevelsRef = useRef<number[]>([]);
 
-  // Sample audio URLs for Qaris
-  const mockResults: QariMatch[] = [
-    {
-      name: "Sheikh Mishary Rashid Alafasy",
-      similarity: 87,
-      country: "Kuwait",
-      audioUrl: "/audio/Mishari.mp3",
-      description: "Known for his melodious and heart-touching recitation style"
-    },
-    {
-      name: "Sheikh Abdul Rahman As-Sudais",
-      similarity: 82,
-      country: "Saudi Arabia", 
-      audioUrl: "/audio/Sudais.mp3",
-      description: "Imam of Masjid al-Haram with a distinctive powerful voice"
-    },
-    {
-      name: "Sheikh Saad Al-Ghamdi",
-      similarity: 78,
-      country: "Saudi Arabia",
-      audioUrl: "/audio/Sa'ad.mp3",
-      description: "Popular for his clear pronunciation and emotional delivery"
-    }
-  ];
+  const [matchResults, setMatchResults] = useState<QariMatch[]>([]);
+
+useEffect(() => {
+  if (currentView === 'results' && recordedBlob) {
+    const fetchResults = async () => {
+      const formData = new FormData();
+      formData.append('audio', recordedBlob);
+
+      const res = await fetch('/api/analyze', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setMatchResults(data);
+      } else {
+        console.error("Analysis failed");
+      }
+    };
+
+    fetchResults();
+  }
+}, [currentView, recordedBlob]);
+
 
   const setupAudioAnalysis = (stream: MediaStream) => {
     try {
@@ -251,8 +253,8 @@ function App() {
   };
 
   const checkForSilentRecording = (): boolean => {
-    console.log("Bypassing silent check.");
-    return false;
+    const levels = volumeLevelsRef.current;
+    if (!levels || levels.length === 0) return true;
   
     const averageLevel = levels.reduce((a, b) => a + b, 0) / levels.length;
   
@@ -260,8 +262,12 @@ function App() {
     const silentSamples = levels.filter(level => level < silentThreshold).length;
     const silentPercentage = (silentSamples / levels.length) * 100;
   
+    console.log("Average Level:", averageLevel);
+    console.log("Silent Percentage:", silentPercentage);
+  
     return averageLevel < 0.001 || silentPercentage > 95;
   };
+  
 
   const startRecording = async () => {
     try {
@@ -379,10 +385,10 @@ function App() {
     }
     
     // Check for silent recording
-    //if (checkForSilentRecording()) {
-    //  setSilentRecordingError('It looks like your recitation was silent or too quiet. Please try recording again and speak closer to the microphone.');
-    //  return;
-    //}
+    if (checkForSilentRecording()) {
+      setSilentRecordingError('It looks like your recitation was silent or too quiet. Please try recording again and speak closer to the microphone.');
+      return;
+    }
     
     setSilentRecordingError(null);
     setCurrentView('analyzing');
@@ -643,9 +649,9 @@ function App() {
             </div>
 
             <div className="space-y-6 mb-8">
-              {mockResults.map((qari, index) => (
-                <QariCard key={qari.name} qari={qari} rank={index + 1} />
-              ))}
+            {matchResults.map((qari, index) => (
+            <QariCard key={qari.name} qari={qari} rank={index + 1} />
+            ))}
             </div>
 
             <div className="text-center">
