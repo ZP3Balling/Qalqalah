@@ -258,10 +258,8 @@ function App() {
     const averageLevel = levels.reduce((a, b) => a + b, 0) / levels.length;
     
     // Check if more than 80% of the recording is below a very low threshold
-    const silentThreshold = 0.01; // Very low threshold for silence
-    const silentSamples = levels.filter(level => level < silentThreshold).length;
-    const silentPercentage = (silentSamples / levels.length) * 100;
-    
+    const silentThreshold = 0.005;
+    return averageLevel < 0.002 || silentPercentage > 90;    
     // Consider recording silent if average is very low OR more than 80% is silent
     return averageLevel < 0.005 || silentPercentage > 80;
   };
