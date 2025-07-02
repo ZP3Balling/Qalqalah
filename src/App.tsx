@@ -468,15 +468,15 @@ function App() {
       <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 py-6">
           <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2 tracking-tight">
-          Qalqalah
+          <div className="text-center">
+            <h1 className="text-5xl font-extrabold text-emerald-700 tracking-tight mb-2">
+            Qalqalah
           </h1>
+          </div>
           <p className="text-lg text-gray-600 italic">
-          Echo Reciters Until <span className="font-semibold text-emerald-600">YOU</span> Become One
+          Echo Reciters Until <span className="font-semibold text-emerald-600">YOU</span> Become One.
         </p>
         <div className="mt-4 text-center">
-        <p className="text-2xl font-bold text-emerald-700 mb-1">قلقلة</p>
-        <p className="text-sm text-gray-500">Quranic Echo. Timeless Voice.</p>
 </div>
 
           </div>
