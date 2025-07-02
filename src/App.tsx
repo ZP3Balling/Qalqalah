@@ -282,6 +282,9 @@ useEffect(() => {
           channelCount: 1
         } 
       });
+
+      console.log("Mic stream tracks:", stream.getAudioTracks());
+
       
       streamRef.current = stream;
       audioChunksRef.current = [];
