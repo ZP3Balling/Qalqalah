@@ -253,15 +253,14 @@ function App() {
   const checkForSilentRecording = (): boolean => {
     const levels = volumeLevelsRef.current;
     if (levels.length === 0) return true;
-
-    // Calculate average volume level
+  
     const averageLevel = levels.reduce((a, b) => a + b, 0) / levels.length;
-    
-    // Check if more than 80% of the recording is below a very low threshold
-    const silentThreshold = 0.005;
-    return averageLevel < 0.002 || silentPercentage > 90;    
-    // Consider recording silent if average is very low OR more than 80% is silent
-    return averageLevel < 0.005 || silentPercentage > 80;
+  
+    const silentThreshold = 0.002;
+    const silentSamples = levels.filter(level => level < silentThreshold).length;
+    const silentPercentage = (silentSamples / levels.length) * 100;
+  
+    return averageLevel < 0.001 || silentPercentage > 95;
   };
 
   const startRecording = async () => {
