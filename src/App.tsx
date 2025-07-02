@@ -284,7 +284,15 @@ useEffect(() => {
         } 
       });
 
-      console.log("Mic stream tracks:", stream.getAudioTracks());
+      console.log("Stream active?", stream.active);
+
+      const tracks = stream.getAudioTracks();
+      console.log("Mic stream tracks:", tracks, "enabled?", tracks[0]?.enabled);
+
+      // 🔊 Temporary: Listen to mic live (for debugging only)
+      const audioElement = new Audio();
+      audioElement.srcObject = stream;
+      audioElement.play();
 
       
       streamRef.current = stream;
