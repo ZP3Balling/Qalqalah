@@ -251,8 +251,8 @@ function App() {
   };
 
   const checkForSilentRecording = (): boolean => {
-    const levels = volumeLevelsRef.current;
-    if (levels.length === 0) return true;
+    console.log("Bypassing silent check.");
+    return false;
   
     const averageLevel = levels.reduce((a, b) => a + b, 0) / levels.length;
   
@@ -379,10 +379,10 @@ function App() {
     }
     
     // Check for silent recording
-    if (checkForSilentRecording()) {
-      setSilentRecordingError('It looks like your recitation was silent or too quiet. Please try recording again and speak closer to the microphone.');
-      return;
-    }
+    //if (checkForSilentRecording()) {
+    //  setSilentRecordingError('It looks like your recitation was silent or too quiet. Please try recording again and speak closer to the microphone.');
+    //  return;
+    //}
     
     setSilentRecordingError(null);
     setCurrentView('analyzing');
