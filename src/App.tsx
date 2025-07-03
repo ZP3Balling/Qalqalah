@@ -314,10 +314,12 @@ useEffect(() => {
       mediaRecorderRef.current = mediaRecorder;
       
       mediaRecorder.ondataavailable = (event) => {
+        console.log("🎤 Data available:", event.data.size);
         if (event.data.size > 0) {
           audioChunksRef.current.push(event.data);
         }
       };
+      
       
       mediaRecorder.onstop = () => {
         const audioBlob = new Blob(audioChunksRef.current, { 
