@@ -270,6 +270,7 @@ useEffect(() => {
   
 
   const startRecording = async () => {
+    console.log("Recording button was clicked!");
     console.log("Start recording function triggered");
     try {
       setPermissionError(null);
@@ -294,7 +295,7 @@ useEffect(() => {
       audioElement.srcObject = stream;
       audioElement.play();
 
-      
+
       streamRef.current = stream;
       audioChunksRef.current = [];
       volumeLevelsRef.current = [];
