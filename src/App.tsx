@@ -339,9 +339,9 @@ useEffect(() => {
         setHasRecording(true);
       
         // Optional: Auto-play recording for quick testing
-        //const audioURL = URL.createObjectURL(audioBlob);
-        //const testAudio = new Audio(audioURL);
-        //testAudio.play();
+        const audioURL = URL.createObjectURL(audioBlob);
+        const testAudio = new Audio(audioURL);
+        testAudio.play();
       };
       
       
