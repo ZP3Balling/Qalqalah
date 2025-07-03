@@ -309,13 +309,9 @@ useEffect(() => {
       // Setup audio analysis for silence detection
       setupAudioAnalysis(stream);
       
-      const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: MediaRecorder.isTypeSupported('audio/webm;codecs=opus') 
-          ? 'audio/webm;codecs=opus' 
-          : MediaRecorder.isTypeSupported('audio/webm') 
-          ? 'audio/webm' 
-          : 'audio/mp4'
-      });
+      const mediaRecorder = new MediaRecorder(stream);
+
+      
       
       mediaRecorderRef.current = mediaRecorder;
       
@@ -339,10 +335,9 @@ useEffect(() => {
         setRecordedBlob(audioBlob);
         setHasRecording(true);
       
-        // Optional: Auto-play recording for quick testing
-        const audioURL = URL.createObjectURL(audioBlob);
-        const testAudio = new Audio(audioURL);
+        const testAudio = new Audio(URL.createObjectURL(audioBlob));
         testAudio.play();
+        
       };
       
       
