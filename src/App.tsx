@@ -276,7 +276,17 @@ useEffect(() => {
       setPermissionError(null);
       setSilentRecordingError(null);
       
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          channelCount: 1,
+          sampleRate: 44100,
+          sampleSize: 16,
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true
+        }
+      });
+      
 
       
       const audioTrack = stream.getAudioTracks()[0];
@@ -303,9 +313,11 @@ useEffect(() => {
       // Setup audio analysis for silence detection
       setupAudioAnalysis(stream);
       
-      const mediaRecorder = new MediaRecorder(stream);
-
-      
+      const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
+      ? "audio/webm;codecs=opus"
+      : "audio/webm";
+    
+      const mediaRecorder = new MediaRecorder(stream, { mimeType });
       
       mediaRecorderRef.current = mediaRecorder;
       
@@ -321,18 +333,21 @@ useEffect(() => {
       
       
       mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, { 
-          type: mediaRecorder.mimeType 
-        });
+        const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
         console.log("Blob inspection:", audioBlob);
         console.log("Final audio blob size:", audioBlob.size);
+      
+        if (audioBlob.size < 1000) {
+          console.warn("Audio blob too small, likely silent or broken.");
+        }
+      
         setRecordedBlob(audioBlob);
         setHasRecording(true);
       
         const testAudio = new Audio(URL.createObjectURL(audioBlob));
         testAudio.play();
-        
       };
+      
       
       
       mediaRecorder.start(100); // Collect data every 100ms
