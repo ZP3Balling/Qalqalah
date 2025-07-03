@@ -334,6 +334,7 @@ useEffect(() => {
         const audioBlob = new Blob(audioChunksRef.current, { 
           type: mediaRecorder.mimeType 
         });
+        console.log("Blob inspection:", audioBlob);
         console.log("Final audio blob size:", audioBlob.size);
         setRecordedBlob(audioBlob);
         setHasRecording(true);
