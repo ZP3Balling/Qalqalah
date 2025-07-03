@@ -320,11 +320,14 @@ useEffect(() => {
       mediaRecorderRef.current = mediaRecorder;
       
       mediaRecorder.ondataavailable = (event) => {
-        console.log(" Data available:", event.data.size);
         if (event.data.size > 0) {
+          console.log("Chunk size:", event.data.size);
           audioChunksRef.current.push(event.data);
+        } else {
+          console.warn("Received empty audio data chunk");
         }
       };
+      
       
       
       mediaRecorder.onstop = () => {
