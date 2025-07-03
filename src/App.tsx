@@ -276,14 +276,8 @@ useEffect(() => {
       setPermissionError(null);
       setSilentRecordingError(null);
       
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-          sampleRate: 44100,
-          channelCount: 1
-        }
-      });
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
       
       const audioTrack = stream.getAudioTracks()[0];
       console.log("Track settings:", audioTrack.getSettings());
