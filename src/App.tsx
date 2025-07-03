@@ -282,8 +282,14 @@ useEffect(() => {
           noiseSuppression: true,
           sampleRate: 44100,
           channelCount: 1
-        } 
+        }
       });
+      
+      const audioTrack = stream.getAudioTracks()[0];
+      console.log("Track settings:", audioTrack.getSettings());
+      console.log("Track readyState:", audioTrack.readyState); // should be 'live'
+      console.log("Track enabled:", audioTrack.enabled); // should be true
+      
 
       console.log("Stream active?", stream.active);
 
@@ -314,7 +320,7 @@ useEffect(() => {
       mediaRecorderRef.current = mediaRecorder;
       
       mediaRecorder.ondataavailable = (event) => {
-        console.log("🎤 Data available:", event.data.size);
+        console.log(" Data available:", event.data.size);
         if (event.data.size > 0) {
           audioChunksRef.current.push(event.data);
         }
@@ -325,7 +331,7 @@ useEffect(() => {
         const audioBlob = new Blob(audioChunksRef.current, { 
           type: mediaRecorder.mimeType 
         });
-        console.log("🧪 Final audio blob size:", audioBlob.size);
+        console.log("Final audio blob size:", audioBlob.size);
         setRecordedBlob(audioBlob);
         setHasRecording(true);
       
