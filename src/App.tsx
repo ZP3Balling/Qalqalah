@@ -17,27 +17,27 @@ interface AudioVisualizerProps {
 const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ isRecording, audioLevel }) => {
   const bars = Array.from({ length: 20 }, (_, i) => {
     const height = isRecording
-      ? Math.random() * 40 + 10 + (audioLevel * 30)
+      ? Math.min(60, 10 + audioLevel * 80 + Math.random() * 30) // more responsive to mic input
       : 10;
     return (
       <div
         key={i}
-        className={`bg-gradient-to-t from-emerald-400 to-emerald-600 rounded-full transition-all duration-150 ${isRecording ? 'animate-pulse' : ''
-          }`}
+        className={`bg-emerald-500 rounded-md transition-all duration-150`}
         style={{
+          width: '6px',
           height: `${height}px`,
-          animationDelay: `${i * 50}ms`
         }}
       />
     );
   });
 
   return (
-    <div className="flex items-end justify-center space-x-1 h-16">
+    <div className="flex items-end justify-center space-x-1 h-24 mt-4">
       {bars}
     </div>
   );
 };
+
 
 const QariCard: React.FC<{ qari: QariMatch; rank: number }> = ({ qari, rank }) => {
   const [isPlaying, setIsPlaying] = useState(false);
