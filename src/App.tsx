@@ -16,9 +16,9 @@ interface AudioVisualizerProps {
 
 const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ isRecording, audioLevel }) => {
   const bars = Array.from({ length: 20 }, (_, i) => {
-    const height = isRecording
-      ? Math.min(60, 10 + audioLevel * 80 + Math.random() * 30) // more responsive to mic input
-      : 10;
+    const height = isRecording 
+    ? Math.max(10, audioLevel * 100 + (i % 5) * 2) // smoother gradient between bars
+    : 10;  
     return (
       <div
         key={i}
@@ -300,9 +300,9 @@ function App() {
       console.log("Mic stream tracks:", tracks, "enabled?", tracks[0]?.enabled);
 
       // 🔊 Temporary: Listen to mic live (for debugging only)
-      const audioElement = new Audio();
-      audioElement.srcObject = stream;
-      audioElement.play();
+      // const audioElement = new Audio();
+      // audioElement.srcObject = stream;
+      // audioElement.play();
 
 
       streamRef.current = stream;
