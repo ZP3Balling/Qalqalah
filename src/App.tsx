@@ -16,16 +16,15 @@ interface AudioVisualizerProps {
 
 const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ isRecording, audioLevel }) => {
   const bars = Array.from({ length: 20 }, (_, i) => {
-    const height = isRecording 
+    const height = isRecording
       ? Math.random() * 40 + 10 + (audioLevel * 30)
       : 10;
     return (
       <div
         key={i}
-        className={`bg-gradient-to-t from-emerald-400 to-emerald-600 rounded-full transition-all duration-150 ${
-          isRecording ? 'animate-pulse' : ''
-        }`}
-        style={{ 
+        className={`bg-gradient-to-t from-emerald-400 to-emerald-600 rounded-full transition-all duration-150 ${isRecording ? 'animate-pulse' : ''
+          }`}
+        style={{
           height: `${height}px`,
           animationDelay: `${i * 50}ms`
         }}
@@ -44,10 +43,10 @@ const QariCard: React.FC<{ qari: QariMatch; rank: number }> = ({ qari, rank }) =
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  
+
   const rankColors = {
     1: 'from-yellow-400 to-yellow-600',
-    2: 'from-gray-300 to-gray-500', 
+    2: 'from-gray-300 to-gray-500',
     3: 'from-amber-600 to-amber-800'
   };
 
@@ -65,16 +64,16 @@ const QariCard: React.FC<{ qari: QariMatch; rank: number }> = ({ qari, rank }) =
       if (!audioRef.current) {
         setIsLoading(true);
         // Use sample URL based on Qari name, fallback to a working sample
-        const audioUrl = sampleAudioUrls[qari.name as keyof typeof sampleAudioUrls] || 
-                         "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3";
-        
+        const audioUrl = sampleAudioUrls[qari.name as keyof typeof sampleAudioUrls] ||
+          "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3";
+
         audioRef.current = new Audio(audioUrl);
         audioRef.current.crossOrigin = "anonymous";
-        
+
         audioRef.current.addEventListener('ended', () => {
           setIsPlaying(false);
         });
-        
+
         audioRef.current.addEventListener('error', (e) => {
           console.error('Error playing audio for', qari.name, e);
           setIsPlaying(false);
@@ -140,12 +139,12 @@ const QariCard: React.FC<{ qari: QariMatch; rank: number }> = ({ qari, rank }) =
           <div className="text-xs text-gray-500">Match</div>
         </div>
       </div>
-      
+
       <p className="text-gray-600 text-sm mb-4">{qari.description}</p>
-      
+
       <div className="flex items-center justify-between">
         <div className="flex-1 bg-gray-200 rounded-full h-2 mr-4">
-          <div 
+          <div
             className="bg-gradient-to-r from-emerald-400 to-emerald-600 h-2 rounded-full transition-all duration-500"
             style={{ width: `${qari.similarity}%` }}
           />
@@ -181,12 +180,12 @@ function App() {
   const [permissionError, setPermissionError] = useState<string | null>(null);
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
   const [silentRecordingError, setSilentRecordingError] = useState<string | null>(null);
-  
+
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const timerIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const audioLevelIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  
+
   const streamRef = useRef<MediaStream | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
@@ -194,28 +193,28 @@ function App() {
 
   const [matchResults, setMatchResults] = useState<QariMatch[]>([]);
 
-useEffect(() => {
-  if (currentView === 'results' && recordedBlob) {
-    const fetchResults = async () => {
-      const formData = new FormData();
-      formData.append('audio', recordedBlob);
+  useEffect(() => {
+    if (currentView === 'results' && recordedBlob) {
+      const fetchResults = async () => {
+        const formData = new FormData();
+        formData.append('audio', recordedBlob);
 
-      const res = await fetch('/api/analyze', {
-        method: 'POST',
-        body: formData,
-      });
+        const res = await fetch('/api/analyze', {
+          method: 'POST',
+          body: formData,
+        });
 
-      if (res.ok) {
-        const data = await res.json();
-        setMatchResults(data);
-      } else {
-        console.error("Analysis failed");
-      }
-    };
+        if (res.ok) {
+          const data = await res.json();
+          setMatchResults(data);
+        } else {
+          console.error("Analysis failed");
+        }
+      };
 
-    fetchResults();
-  }
-}, [currentView, recordedBlob]);
+      fetchResults();
+    }
+  }, [currentView, recordedBlob]);
 
 
   const setupAudioAnalysis = (stream: MediaStream) => {
@@ -223,10 +222,10 @@ useEffect(() => {
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       const analyser = audioContext.createAnalyser();
       const microphone = audioContext.createMediaStreamSource(stream);
-      
+
       analyser.fftSize = 256;
       microphone.connect(analyser);
-      
+
       audioContextRef.current = audioContext;
       analyserRef.current = analyser;
       volumeLevelsRef.current = [];
@@ -238,14 +237,14 @@ useEffect(() => {
           analyserRef.current.getByteFrequencyData(dataArray);
           const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
           const normalizedLevel = average / 255;
-          
+
           volumeLevelsRef.current.push(normalizedLevel);
           setAudioLevel(normalizedLevel);
-          
+
           requestAnimationFrame(checkAudioLevel);
         }
       };
-      
+
       checkAudioLevel();
     } catch (error) {
       console.error('Error setting up audio analysis:', error);
@@ -255,19 +254,19 @@ useEffect(() => {
   const checkForSilentRecording = (): boolean => {
     const levels = volumeLevelsRef.current;
     if (!levels || levels.length === 0) return true;
-  
+
     const averageLevel = levels.reduce((a, b) => a + b, 0) / levels.length;
-  
+
     const silentThreshold = 0.002;
     const silentSamples = levels.filter(level => level < silentThreshold).length;
     const silentPercentage = (silentSamples / levels.length) * 100;
-  
+
     console.log("Average Level:", averageLevel);
     console.log("Silent Percentage:", silentPercentage);
-  
+
     return averageLevel < 0.001 || silentPercentage > 95;
   };
-  
+
 
   const startRecording = async () => {
     console.log("Recording button was clicked!");
@@ -275,7 +274,7 @@ useEffect(() => {
     try {
       setPermissionError(null);
       setSilentRecordingError(null);
-      
+
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           channelCount: 1,
@@ -286,14 +285,14 @@ useEffect(() => {
           autoGainControl: true
         }
       });
-      
 
-      
+
+
       const audioTrack = stream.getAudioTracks()[0];
       console.log("Track settings:", audioTrack.getSettings());
       console.log("Track readyState:", audioTrack.readyState); // should be 'live'
       console.log("Track enabled:", audioTrack.enabled); // should be true
-      
+
 
       console.log("Stream active?", stream.active);
 
@@ -309,18 +308,18 @@ useEffect(() => {
       streamRef.current = stream;
       audioChunksRef.current = [];
       volumeLevelsRef.current = [];
-      
+
       // Setup audio analysis for silence detection
       setupAudioAnalysis(stream);
-      
+
       const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
-      ? "audio/webm;codecs=opus"
-      : "audio/webm";
-    
+        ? "audio/webm;codecs=opus"
+        : "audio/webm";
+
       const mediaRecorder = new MediaRecorder(stream, { mimeType });
-      
+
       mediaRecorderRef.current = mediaRecorder;
-      
+
       mediaRecorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
           console.log("Chunk size:", event.data.size);
@@ -329,31 +328,33 @@ useEffect(() => {
           console.warn("Received empty audio data chunk");
         }
       };
-      
-      
-      
+
+
+
       mediaRecorder.onstop = () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
         console.log("Blob inspection:", audioBlob);
         console.log("Final audio blob size:", audioBlob.size);
-      
+
         if (audioBlob.size < 1000) {
           console.warn("Audio blob too small, likely silent or broken.");
         }
-      
+
         setRecordedBlob(audioBlob);
         setHasRecording(true);
-      
+
         const testAudio = new Audio(URL.createObjectURL(audioBlob));
-        testAudio.play();
+        const audioURL = URL.createObjectURL(audioBlob);
+        // You can use audioURL later for a play button
+
       };
-      
-      
-      
+
+
+
       mediaRecorder.start(100); // Collect data every 100ms
       setIsRecording(true);
       setRecordingTime(0);
-      
+
       // Start timer - runs until stopped or 2 minutes reached
       timerIntervalRef.current = setInterval(() => {
         setRecordingTime(prev => {
@@ -389,27 +390,27 @@ useEffect(() => {
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
     }
-    
+
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
     }
-    
+
     if (audioContextRef.current) {
       audioContextRef.current.close();
       audioContextRef.current = null;
     }
-    
+
     if (timerIntervalRef.current) {
       clearInterval(timerIntervalRef.current);
       timerIntervalRef.current = null;
     }
-    
+
     if (audioLevelIntervalRef.current) {
       clearInterval(audioLevelIntervalRef.current);
       audioLevelIntervalRef.current = null;
     }
-    
+
     setIsRecording(false);
     setAudioLevel(0);
   };
@@ -419,23 +420,23 @@ useEffect(() => {
       console.error('No recording available for analysis');
       return;
     }
-    
+
     // Check for silent recording
     if (checkForSilentRecording()) {
       setSilentRecordingError('It looks like your recitation was silent or too quiet. Please try recording again and speak closer to the microphone.');
       return;
     }
-    
+
     setSilentRecordingError(null);
     setCurrentView('analyzing');
     setAnalysisProgress(0);
-    
+
     // Simulate analysis progress with proper capping at 100%
     const interval = setInterval(() => {
       setAnalysisProgress(prev => {
         const increment = Math.random() * 8 + 2;
         const newProgress = prev + increment;
-        
+
         if (newProgress >= 100) {
           clearInterval(interval);
           setTimeout(() => setCurrentView('results'), 500);
@@ -448,7 +449,7 @@ useEffect(() => {
 
   const downloadRecording = () => {
     if (!recordedBlob) return;
-    
+
     const url = URL.createObjectURL(recordedBlob);
     const a = document.createElement('a');
     a.href = url;
@@ -464,7 +465,7 @@ useEffect(() => {
     if (isRecording) {
       stopRecording();
     }
-    
+
     setCurrentView('record');
     setIsRecording(false);
     setRecordingTime(0);
@@ -507,16 +508,16 @@ useEffect(() => {
       <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 py-6">
           <div className="text-center">
-          <div className="text-center">
-            <h1 className="text-5xl font-extrabold text-emerald-700 tracking-tight mb-2">
-            Qalqalah
-          </h1>
-          </div>
-          <p className="text-lg text-gray-600 italic">
-          Echo Reciters Until <span className="font-semibold text-emerald-600">YOU</span> Become One.
-        </p>
-        <div className="mt-4 text-center">
-</div>
+            <div className="text-center">
+              <h1 className="text-5xl font-extrabold text-emerald-700 tracking-tight mb-2">
+                Qalqalah
+              </h1>
+            </div>
+            <p className="text-lg text-gray-600 italic">
+              Echo Reciters Until <span className="font-semibold text-emerald-600">YOU</span> Become One.
+            </p>
+            <div className="mt-4 text-center">
+            </div>
 
           </div>
         </div>
@@ -532,7 +533,7 @@ useEffect(() => {
               <h2 className="text-2xl font-bold text-gray-800 mb-4">
                 {isRecording ? 'Recording...' : 'Ready to Record'}
               </h2>
-              
+
               {isRecording && (
                 <div className="mb-6">
                   <div className="text-3xl font-bold text-emerald-600 mb-2">
@@ -574,7 +575,7 @@ useEffect(() => {
                   <span>Start Recording</span>
                 </button>
               )}
-              
+
               {isRecording && (
                 <button
                   onClick={stopRecording}
@@ -584,7 +585,7 @@ useEffect(() => {
                   <span>Stop Recording</span>
                 </button>
               )}
-              
+
               {hasRecording && !isRecording && (
                 <div className="flex flex-wrap justify-center gap-4">
                   <button
@@ -594,6 +595,7 @@ useEffect(() => {
                     <CheckCircle size={20} />
                     <span>Analyze Recording</span>
                   </button>
+
                   <button
                     onClick={downloadRecording}
                     className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-4 rounded-xl font-semibold shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
@@ -601,6 +603,7 @@ useEffect(() => {
                     <Download size={20} />
                     <span>Download</span>
                   </button>
+
                   <button
                     onClick={() => {
                       setHasRecording(false);
@@ -614,8 +617,22 @@ useEffect(() => {
                     <RotateCcw size={20} />
                     <span>Record Again</span>
                   </button>
+
+                  <button
+                    onClick={() => {
+                      if (recordedBlob) {
+                        const playbackAudio = new Audio(URL.createObjectURL(recordedBlob));
+                        playbackAudio.play();
+                      }
+                    }}
+                    className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white px-6 py-4 rounded-xl font-semibold shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
+                  >
+                    <Play size={20} />
+                    <span>Play Recording</span>
+                  </button>
                 </div>
               )}
+
             </div>
 
             {hasRecording && (
@@ -648,14 +665,14 @@ useEffect(() => {
             <p className="text-gray-600 mb-6">
               Comparing your voice with famous Qaris using advanced audio analysis...
             </p>
-            
+
             <div className="mb-6">
               <div className="flex justify-between text-sm text-gray-600 mb-2">
                 <span>Progress</span>
                 <span>{Math.round(analysisProgress)}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
-                <div 
+                <div
                   className="bg-gradient-to-r from-blue-400 to-blue-600 h-3 rounded-full transition-all duration-300"
                   style={{ width: `${Math.min(analysisProgress, 100)}%` }}
                 />
@@ -685,9 +702,9 @@ useEffect(() => {
             </div>
 
             <div className="space-y-6 mb-8">
-            {matchResults.map((qari, index) => (
-            <QariCard key={qari.name} qari={qari} rank={index + 1} />
-            ))}
+              {matchResults.map((qari, index) => (
+                <QariCard key={qari.name} qari={qari} rank={index + 1} />
+              ))}
             </div>
 
             <div className="text-center">
