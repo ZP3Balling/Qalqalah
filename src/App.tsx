@@ -16,9 +16,9 @@ interface AudioVisualizerProps {
 
 const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ isRecording, audioLevel }) => {
   const bars = Array.from({ length: 20 }, (_, i) => {
-    const height = isRecording 
-    ? Math.max(10, audioLevel * 100 + (i % 5) * 2) // smoother gradient between bars
-    : 10;  
+    const height = isRecording
+      ? Math.max(10, audioLevel * 100 + (i % 5) * 2) // smoother gradient between bars
+      : 10;
     return (
       <div
         key={i}
@@ -503,7 +503,7 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-[#012B2D] text-[#FFD700]">
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 py-6">
@@ -569,7 +569,7 @@ function App() {
               {!isRecording && !hasRecording && (
                 <button
                   onClick={startRecording}
-                  className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-8 py-4 rounded-xl font-semibold shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
+                  className="bg-white text-[#012B2D] hover:bg-gray-200"
                 >
                   <Mic size={20} />
                   <span>Start Recording</span>
@@ -590,7 +590,7 @@ function App() {
                 <div className="flex flex-wrap justify-center gap-4">
                   <button
                     onClick={analyzeRecording}
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-semibold shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
+                    className="bg-white text-[#012B2D] hover:bg-gray-200"
                   >
                     <CheckCircle size={20} />
                     <span>Analyze Recording</span>
@@ -598,7 +598,7 @@ function App() {
 
                   <button
                     onClick={downloadRecording}
-                    className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-4 rounded-xl font-semibold shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
+                    className="bg-white text-[#012B2D] hover:bg-gray-200"
                   >
                     <Download size={20} />
                     <span>Download</span>
@@ -612,7 +612,7 @@ function App() {
                       setSilentRecordingError(null);
                       volumeLevelsRef.current = [];
                     }}
-                    className="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-4 rounded-xl font-semibold shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
+                    className="bg-white text-[#012B2D] hover:bg-gray-200"
                   >
                     <RotateCcw size={20} />
                     <span>Record Again</span>
@@ -625,7 +625,7 @@ function App() {
                         playbackAudio.play();
                       }
                     }}
-                    className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white px-6 py-4 rounded-xl font-semibold shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
+                    className="bg-white text-[#012B2D] hover:bg-gray-200"
                   >
                     <Play size={20} />
                     <span>Play Recording</span>
