@@ -509,11 +509,11 @@ function App() {
         <div className="max-w-4xl mx-auto px-4 py-6">
           <div className="text-center">
             <div className="text-center">
-              <h1 className="text-5xl font-extrabold text-[#FFD700] tracking-tight mb-2">
+              <h1 className="text-5xl font-extrabold text-[#B88A44] tracking-tight mb-2">
                 Qalqalah
               </h1>
             </div>
-            <p className="text-lg italic text-[#FFD700]/80">
+            <p className="text-lg italic text-[#B88A44]/80">
               Echo Reciters Until <span className="font-semibold text-emerald-600">YOU</span> Become One.
             </p>
             <div className="mt-4 text-center">
