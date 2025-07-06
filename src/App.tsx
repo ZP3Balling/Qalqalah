@@ -505,7 +505,7 @@ function App() {
   return (
     <div className="min-h-screen bg-[#012B2D] text-[#FFD700]">
       {/* Header */}
-      <div className="bg-[#014345] shadow-sm border-b border-[#D4AF37]">
+      <div className="bg-[#014345] shadow-sm border-b border-[#B88A44]">
         <div className="max-w-4xl mx-auto px-4 py-6">
           <div className="text-center">
             <div className="text-center">
@@ -525,7 +525,7 @@ function App() {
 
       <div className="max-w-4xl mx-auto px-4 py-8">
         {currentView === 'record' && (
-          <div className="bg-[#D4AF37] rounded-2xl shadow-xl p-8">
+          <div className="bg-[#B88A44] rounded-2xl shadow-xl p-8">
             <div className="text-center mb-8">
               <div className="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
                 <Mic size={48} className="text-white" />
