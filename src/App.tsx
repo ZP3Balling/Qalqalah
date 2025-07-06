@@ -121,7 +121,7 @@ const QariCard: React.FC<{ qari: QariMatch; rank: number }> = ({ qari, rank }) =
   }, []);
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+    <div className="bg-[#014345] text-[#FFD700] rounded-xl shadow-lg p-6 border border-[#FFD700]/20 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
           <div className={`w-8 h-8 rounded-full bg-gradient-to-r ${rankColors[rank as keyof typeof rankColors]} flex items-center justify-center text-white font-bold text-sm`}>
@@ -509,11 +509,11 @@ function App() {
         <div className="max-w-4xl mx-auto px-4 py-6">
           <div className="text-center">
             <div className="text-center">
-              <h1 className="text-5xl font-extrabold text-emerald-700 tracking-tight mb-2">
+              <h1 className="text-5xl font-extrabold text-[#FFD700] tracking-tight mb-2">
                 Qalqalah
               </h1>
             </div>
-            <p className="text-lg text-gray-600 italic">
+            <p className="text-lg italic text-[#FFD700]/80">
               Echo Reciters Until <span className="font-semibold text-emerald-600">YOU</span> Become One.
             </p>
             <div className="mt-4 text-center">
@@ -673,7 +673,7 @@ function App() {
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
                 <div
-                  className="bg-gradient-to-r from-blue-400 to-blue-600 h-3 rounded-full transition-all duration-300"
+                  className="bg-[#FFD700] h-3 rounded-full transition-all duration-300"
                   style={{ width: `${Math.min(analysisProgress, 100)}%` }}
                 />
               </div>
